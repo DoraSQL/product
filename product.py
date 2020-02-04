@@ -4,20 +4,13 @@ import os #operating ysytem
 #讀取檔案
 def read_file(filename): 
     product =[]
-    if os.path.isfile(filename): #檢查檔案在不在
-        print('yeah! 找到檔案了!')
-
-        with open(filename, 'r', encoding='utf-8') as f:
-            for line in f:
-                if '商品,價格' in line:
-                    continue
-                name, price = line.strip().split(',')
-                product.append([name,price])
-        print(product)
-    else:
-        print('找不到檔案... 哭哭 >w<')
+    with open(filename, 'r', encoding='utf-8') as f:
+        for line in f:
+            if '商品,價格' in line:
+                continue
+            name, price = line.strip().split(',')
+            product.append([name,price])    
     return product
-
 
 #讓user輸入
 def user_input(product):
@@ -50,8 +43,18 @@ def write_file(filename, product):
 
 
 
-product = read_file('products.csv')
-product = user_input(product)
-print_products(product)
-write_file('products.csv', product )
+def main():
+    #確認檔案是否存在
+    filename = 'products.csv'
+    if os.path.isfile(filename): #檢查檔案在不在
+        print('yeah! 找到檔案了!')
+        product = read_file(filename) #若檔案存在才執行read_file()
+    else:
+        print('找不到檔案... 哭哭 >w<')
+
+    product = user_input(product)
+    print_products(product)
+    write_file('products.csv', product )
+
+main()
 
